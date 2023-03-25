@@ -1,0 +1,32 @@
+import patoolib, os, img2pdf as i
+
+InputDirectory = r'Path'
+PreDirectory = r'Path'
+OutputDirectory = r'Path'
+Images: list = []
+
+
+def clear():
+    for file in os.listdir(PreDirectory):
+        if not file.endswith(".bak"):
+            os.remove(os.path.join(PreDirectory, file))
+
+for filename in os.listdir(InputDirectory):
+
+    Inputfile = os.path.join(InputDirectory, filename)
+    if Inputfile.endswith(".rar") or Inputfile.endswith(".zip"):
+        patoolib.extract_archive(Inputfile, verbosity=1, outdir=r"C:\Users\julll\PycharmProjects\Utils\preOutput")
+
+        for Image in os.listdir(PreDirectory):
+            Images.append(os.path.join(PreDirectory, Image))
+
+        Images.sort()
+
+        with open(fr'C:\Users\julll\PycharmProjects\Utils\Output\{filename[:-4]}.pdf', "wb") as f:
+            f.write(i.convert(Images))
+
+        Images = []
+        clear()
+
+    if os.path.isfile(Inputfile):
+        print(Inputfile, filename)
